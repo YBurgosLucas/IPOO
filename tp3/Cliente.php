@@ -3,7 +3,7 @@ include "Persona.php";
     class Cliente extends Persona{
         private $nroCliente;
 
-        public function __construct($vnroCliente, $vdni, $vnombre,$vapellido){
+        public function __construct( $vdni, $vnombre, $vapellido, $vnroCliente){
             parent::__construct($vdni,$vnombre,$vapellido);
             $this->nroCliente=$vnroCliente;
         }

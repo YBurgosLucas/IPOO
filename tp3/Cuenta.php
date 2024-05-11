@@ -1,5 +1,4 @@
 <?php
-    include "Cliente.php";
     class Cuenta{
         private $nroCuenta;
         private $objCliente;
@@ -22,35 +21,42 @@
         public function setNroCuenta($vnroCuenta){
             $this->nroCuenta=$vnroCuenta;
         }
-        public function setObjCliente($objCliente){
+        public function setObjCliente($vobjCliente){
             $this->objCliente=$vobjCliente;
         }
         public function setSaldo($vsaldo){
             $this->saldo=$vsaldo;
         }
         public function __toString(){
-            $cad="Nro.Cuenta:".$this->getNroCuenta().
+            $cad="\nNro.Cuenta:".$this->getNroCuenta().
                  "\nCliente:".$this->getObjCliente().
                  "\nSaldo:$".$this->getSaldo();
             return $cad;
         }
 
         public function saldoCuenta(){
-            $saldoActual=$this->getSaldo();
-            return $saldoActual;
+            return $this->getSaldo();
         }
 
         public function realizarDeposito($monto){
-            $realizado=false;
             $saldoActual=$this->getSaldo();
-            if($moto>0){
-                $saldoDeposito=$saldoActual+$monto;
-                $realizado=true;
-            }
+            $saldoDeposito=$saldoActual+$monto;
             $this->setSaldo($saldoDeposito);
+            $realizado=$saldoDeposito!=$saldoActual;
             return $realizado;
         }
 
+        public function realizarRetiro($monto){
+            $saldoActual=$this->getSaldo();
+            $respuesta=false;
+            if($saldoActual >0 && $monto<=$saldoActual){
+                $montoRetirado=$saldoActual-$monto;
+                $respuesta=true;
+                $this->setSaldo($montoRetirado);
+            }
+            
+            return $respuesta;
+        }
       
         
     }
