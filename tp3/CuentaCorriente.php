@@ -23,13 +23,12 @@
         public function realizarRetiro($monto){
             $descubierto=$this->getDescubierto();
             $respuesta=false;
-            if($this->getSaldo() >=$monto  ){
-                    parent::realizarRetiro($monto);
+            if(parent::realizarRetiro($monto) ){
                     $respuesta=true;
             }
             else{
                 $saldoActual=$this->getSaldo()-$monto;
-                if($saldoActual<=$descubierto){
+                if(($saldoActual*-1)<=$descubierto){
                     $this->setSaldo($saldoActual);
                     $respuesta=true;
                 }

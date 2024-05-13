@@ -72,20 +72,26 @@
         }
 
         public function incorporarCliente($objCliente){
-            $colCliente=$this->getColeCliente();
-            $incorporado=null;
-            foreach($colCliente as $cliente){
-                if($cliente->getDni() == $objCliente->getDni()){
-                    $incorporado=false;
-                }
+            $colecCliente = $this->getColeCliente();
+            $i = 0;
+            $encontrado = false;
+            if(count($colecCliente)>0){
+                do{
+                    if( $colecCliente[$i] == $objCliente){
+                        $encontrado = true;
+                    }  
+                    $i++;
+                }while($i<count($colecCliente) && $encontrado==false);
             }
-            if($incorporado==null){
-                $i=count($colCliente);
-                $colCliente[$i]=$objCliente;
-                $this->setColeCliente($colCliente);
-                $incorporado=true;
+            if($encontrado == false){
+                $j = count($colecCliente);
+                $colecCliente[$j] = $objCliente;
+                $this->setColeCliente($colecCliente);
+                $respuesta = true;
+            }else{
+                $respuesta = false;
             }
-            return $incorporado;
+            return $respuesta;
         }
 
         public function incorporarCuentaCorriente($numCliente,$montoDescubierto){
@@ -185,7 +191,13 @@
                 $j++;
                 } 
             }
-             return $respuesta;
+            if($respuesta==false){
+                $saldoRetirado=-1;
+            }
+            else{
+                $saldoRetirado=$monto;
+            }
+             return $saldoRetirado;
 
     }
 }   

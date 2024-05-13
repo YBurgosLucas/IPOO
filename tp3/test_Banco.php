@@ -14,35 +14,32 @@
     $objBanco=new Banco($colCCorriente,$colCAhorro,$ultValor, $colCliente);
     $objCliente1=new Cliente(1234, "juan", "gonzalez", 1);
     $objCliente2=new Cliente(4321, "luis", "hernandez", 2);
-    echo "___________________incorporar clientes________________\n";
+    
     $objBanco->incorporarCliente($objCliente1);
     $objBanco->incorporarCliente($objCliente2);
 
-    echo "______________________crear CC____________________\n";
+    
     $objBanco->incorporarCuentaCorriente(1, 200);
     $objBanco->incorporarCuentaCorriente(2, 200);
     
-    echo "_____________________CREAR CA____________________________\n";
+    
     $objBanco->incorporarCajaAhorro(1);
     $objBanco->incorporarCajaAhorro(1);
     $objBanco->incorporarCajaAhorro(2);
 
-    echo "____________________Deposito______________________________\n";
-    $respuesta=$objBanco->realizarDeposito(1,100);
-    if($respuesta){
-        echo "deposito realizado\n";
+    
+    $objBanco->realizarDeposito(3,300);
+    $objBanco->realizarDeposito(4,300);
+    $objBanco->realizarDeposito(5,300);
+    echo "__________________tranferencia___________\n";
+    $respuesta=$objBanco->realizarRetiro(1,150);
+    if($respuesta!=-1){
+        $objBanco->realizarDeposito(5,$respuesta);
+        echo "tranferencia realizada\n";
     }
     else{
-        echo "deposito no hecho \n";
-        
+        echo "tranferencia  no hecha \n";
     }
-    echo "____________________retiro_____________________________\n";
-    $respuesta=$objBanco->realizarRetiro(1,200);
-    if($respuesta){
-        echo "retiro realizado\n";
-        print_r($objBanco);
-    }
-    else{
-        echo "retiro no hecho \n";
-        
-    }
+    
+    echo "__________________Datos Banco___________\n";
+    echo $objBanco."\n";
