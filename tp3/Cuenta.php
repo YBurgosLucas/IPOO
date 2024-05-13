@@ -49,12 +49,11 @@
         public function realizarRetiro($monto){
             $saldoActual=$this->getSaldo();
             $respuesta=false;
-            if($saldoActual >0 && $monto<=$saldoActual){
+            if($saldoActual >=$monto){
                 $montoRetirado=$saldoActual-$monto;
-                $respuesta=true;
                 $this->setSaldo($montoRetirado);
+                $respuesta=true;
             }
-            
             return $respuesta;
         }
       

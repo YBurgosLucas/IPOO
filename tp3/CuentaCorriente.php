@@ -23,16 +23,19 @@
         public function realizarRetiro($monto){
             $descubierto=$this->getDescubierto();
             $respuesta=false;
-            $saldoActual=0;
-            if($this->getSaldo() <=0  && $monto<=$descubierto  ){
-                    $saldoActual=$this->getSaldo()-$saldoActual;
-                    $this->setSaldo($saldoActual);
+            if($this->getSaldo() >=$monto  ){
+                    parent::realizarRetiro($monto);
                     $respuesta=true;
-
             }
             else{
-                parent::realizarRetiro($monto);
-                $respuesta=true;
+                $saldoActual=$this->getSaldo()-$monto;
+                if($saldoActual<=$descubierto){
+                    $this->setSaldo($saldoActual);
+                    $respuesta=true;
+                }
+                else{
+                    $respuesta=false;
+                }
             }
             return $respuesta;
         }

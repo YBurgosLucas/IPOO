@@ -14,35 +14,35 @@
     $objBanco=new Banco($colCCorriente,$colCAhorro,$ultValor, $colCliente);
     $objCliente1=new Cliente(1234, "juan", "gonzalez", 1);
     $objCliente2=new Cliente(4321, "luis", "hernandez", 2);
+    echo "___________________incorporar clientes________________\n";
+    $objBanco->incorporarCliente($objCliente1);
+    $objBanco->incorporarCliente($objCliente2);
 
-    $respuesta=$objBanco->incorporarCliente($objCliente1);
-    if($respuesta){
-        echo "ingresado\n";
-    }
-    else{
-        echo "no ingresado\n";
-    }
+    echo "______________________crear CC____________________\n";
+    $objBanco->incorporarCuentaCorriente(1, 200);
+    $objBanco->incorporarCuentaCorriente(2, 200);
     
-    $respuesta1=$objBanco->incorporarCliente($objCliente2);
-    if($respuesta1){
-        echo "ingresado\n";
-    }
-    else{
-        echo "no ingresado\n";
-    }
+    echo "_____________________CREAR CA____________________________\n";
+    $objBanco->incorporarCajaAhorro(1);
+    $objBanco->incorporarCajaAhorro(1);
+    $objBanco->incorporarCajaAhorro(2);
 
-    $respuesta=$objBanco->incorporarCuentaCorriente(1, 200);
+    echo "____________________Deposito______________________________\n";
+    $respuesta=$objBanco->realizarDeposito(1,100);
     if($respuesta){
-        echo "cuenta creada\n";
+        echo "deposito realizado\n";
     }
     else{
-        echo "cliente no existe\n";
+        echo "deposito no hecho \n";
+        
     }
-    $respuesta2=$objBanco->incorporarCuentaCorriente(2, 200);
-    if($respuesta2){
-        echo "cuenta creada\n";
+    echo "____________________retiro_____________________________\n";
+    $respuesta=$objBanco->realizarRetiro(1,200);
+    if($respuesta){
+        echo "retiro realizado\n";
         print_r($objBanco);
     }
     else{
-        echo "cliente no existe\n";
+        echo "retiro no hecho \n";
+        
     }
