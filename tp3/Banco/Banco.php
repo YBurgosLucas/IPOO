@@ -1,38 +1,28 @@
 <?php
-    include_once "CuentaCorriente.php";
-    include_once "CajaAhorro.php";
-    include_once "Cuenta.php";
 
     class Banco{
-        private $coleCCorriente;
-        private $coleCAhorro;
+        private $colCuentas;
         private $ultValorCuentaAsignado;
         private $coleCliente;
 
-        public function __construct($coleCCorriente, $coleCAhorro, $ultValorCuentaAsignado, $coleCliente){
+        public function __construct($colCuentas, $ultValorCuentaAsignado, $coleCliente){
             
-            $this->coleCCorriente=$coleCCorriente;
-            $this->coleCAhorro=$coleCAhorro;
+            $this->colCuentas=$colCuentas;
             $this->ultValorCuentaAsignado=$ultValorCuentaAsignado;
             $this->coleCliente=$coleCliente;
         }
-        public function getColCCorriente(){
-            return $this->coleCCorriente;
+        public function getColCuentas(){
+            return $this->colCuentas;
         }
-        public function getColCAhorro(){
-            return $this->coleCAhorro;
-        }
+
         public function getUltValorCuenta(){
             return $this->ultValorCuentaAsignado;
         }
         public function getColeCliente(){
             return $this->coleCliente;
         }
-        public function setColCCorriente($coleCCorriente){
-            $this->coleCCorriente=$coleCCorriente;
-        }
-        public function setColCAhorro($coleCAhorro){
-            $this->coleCAhorro=$coleCAhorro;
+        public function setColCuentas($colCuentas){
+            $this->colCuentas=$colCuentas;
         }
         public function setUltValorCuenta($ultValorCuentaAsignado){
             $this->ultValorCuentaAsignado=$ultValorCuentaAsignado;
@@ -41,17 +31,11 @@
             $this->coleCliente=$coleCliente;
         }
 
-        public function retornarCCorriente(){
+        public function retornarCuentas(){
             $cad="";
-            foreach($this->getColCCorriente() as $cCorriente){
-                $cad.=$cCorriente."\n";
-            }
-            return $cad;
-        }
-        public function retornarCAhorro(){
-            $cad="";
-            foreach($this->getColCAhorro() as $cAhorro){
-                $cad.=$cAhorro."\n";
+            $colCuentas=$this->getColCuentas();
+            foreach($colCuentas as $unaCuenta){
+                $cad.=$unaCuenta."\n";
             }
             return $cad;
         }
@@ -64,8 +48,7 @@
             return $cad;
         }
         public function __toString(){
-            $cad="\nColeccion C.Corriente:\n".$this->retornarCCorriente().
-                 "\nColeccion C.Ahorro:\n".$this->retornarCAhorro().
+            $cad="\nColeccion de Cuentas:\n".$this->retornarCuentas().
                  "\nUltimo valor asignado:".$this->getUltValorCuenta().
                  "\nColeccion Clientes:\n".$this->retornarCCliente();
             return $cad;
@@ -97,7 +80,7 @@
         public function incorporarCuentaCorriente($numCliente,$montoDescubierto){
             $i=0;
             $colCliente=$this->getColeCliente();
-            $colCCorriente=$this->getColCCorriente();
+            $colCuentas=$this->getColCuentas();
             $clienteE=false;
             $realizado=false;
             while($i<count($colCliente) && $clienteE==false){
@@ -109,10 +92,10 @@
             }
             if($clienteE){
                 $ultimoValor=$this->getUltValorCuenta()+1;
-                $j=count($colCCorriente);
+                $j=count($colCuentas);
                 $objCCorriente=new CuentaCorriente($ultimoValor,$cliente,0,$montoDescubierto);
-                $colCCorriente[$j]=$objCCorriente;
-                $this->setColCCorriente($colCCorriente);
+                $colCuentas[$j]=$objCCorriente;
+                $this->setColCuentas($colCuentas);
                 $this->setUltValorCuenta($ultimoValor);
                 $realizado=true;
             }
@@ -120,7 +103,7 @@
         }
         public function incorporarCajaAhorro($numCliente){
             $i=0;
-            $colCAhorro=$this->getColCAhorro();
+            $colCuentas=$this->getColCuentas();
             $colCliente=$this->getColeCliente();
             $clienteE=false;
             $realizado=false;
@@ -133,10 +116,10 @@
             }
             if($clienteE){
                 $ultimoValor=$this->getUltValorCuenta()+1;
-                $j=count($colCAhorro);
+                $j=count($colCuentas);
                 $objCliente=new CajaAhorro($ultimoValor, $cliente,0);
-                $colCAhorro[$j]=$objCliente;
-                $this->setColCAhorro($colCAhorro);
+                $colCuentas[$j]=$objCliente;
+                $this->setColCuentas($colCuentas);
                 $this->setUltValorCuenta($ultimoValor);
                 $realizado=true;
             }
@@ -144,53 +127,48 @@
         }
         public function realizarDeposito($numCuenta,$monto){
                 $i=0;
-                $repuesta=false;            
-                while($i<count($this->getColCAhorro()) &&$repuesta==false){
-                    if($this->getColCAhorro()[$i]->getNroCuenta() == $numCuenta){
-                        if($this->getColCAhorro()[$i]->realizarDeposito($monto)){
+                $repuesta=false;           
+                $colCuentas= $this->getColCuentas();
+                while($i<count($colCuentas) && $repuesta==false){
+                    if($colCuentas[$i]->getNroCuenta() == $numCuenta){
+                        if($colCuentas[$i] instanceof CajaAhorro ){
+                            if($colCuentas[$i]->realizarDeposito($monto)){
                            $repuesta=true;  
+                            }
+                        } 
+                          else{
+                            $colCuentas[$i]->realizarDeposito($monto);
+                            $repuesta=true;
                         }
                     }
                     $i++;
-                }
-                $j=0;
-                if($repuesta==false){
-                    while($j<count($this->getColCCorriente()) && $repuesta==false){
-                        if($this->getColCCorriente()[$j]->getNroCuenta()==$numCuenta){
-                            if($this->getColCCorriente()[$j]->realizarDeposito($monto)){
-                                $repuesta=true;
-                            }
-                        }
-                        $j++;
-                    }
-                } 
+                }    
              return $repuesta;     
-            }
             
+        }  
         public function realizarRetiro($numCuenta, $monto){ //el num cuenta de CA y CC son los mismos
             $i=0;
-            $coleCAhorro=$this->getColCAhorro();
-            $colCCorriente=$this->getColCCorriente();
+            $colCuentas=$this->getColCuentas();
             $respuesta=false;
-              while($i<count($coleCAhorro) && $respuesta== false ){
-                    if($coleCAhorro[$i]->getNroCuenta() ==$numCuenta && $monto>0 ){
-                       if($coleCAhorro[$i]->realizarRetiro($monto)){
-                            $respuesta=true;
-                       }   
+              while($i<count($colCuentas) && $respuesta== false ){
+                    if($colCuentas instanceof CajaAhorro){
+                       if($colCuentas[$i]->getNroCuenta() ==$numCuenta && $monto>0 ){
+                             if($coleCuentas[$i]->realizarRetiro($monto)){
+                                 $respuesta=true;
+                             }   
+                        } 
                     }
-                    $i++;
-                }
-            $j=0;
-            if($respuesta==false ){
-              while($j<count($colCCorriente) && $respuesta==false){
-                    if($colCCorriente[$j]->getNroCuenta()== $numCuenta){
-                        if($colCCorriente[$j]->realizarRetiro($monto)){
-                           $respuesta=true;  
+                    else{
+                        if($colCuentas[$i]->getNroCuenta()== $numCuenta){
+                            if($colCuentas[$i]->realizarRetiro($monto)){
+                               $respuesta=true;  
+                            }
                         }
+
                     }
-                $j++;
-                } 
-            }
+                    
+                 $i++;
+                }
             if($respuesta==false){
                 $saldoRetirado=-1;
             }

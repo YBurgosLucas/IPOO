@@ -7,11 +7,10 @@
     include_once "CajaAhorro.php";//hijo
     
     include "Banco.php";
-    $colCCorriente=[];
-    $colCAhorro=[];
+    $colCuentas=[];
     $ultValor=0;
     $colCliente=[];
-    $objBanco=new Banco($colCCorriente,$colCAhorro,$ultValor, $colCliente);
+    $objBanco=new Banco($colCuentas,$ultValor, $colCliente);
     $objCliente1=new Cliente(1234, "juan", "gonzalez", 1);
     $objCliente2=new Cliente(4321, "luis", "hernandez", 2);
     
