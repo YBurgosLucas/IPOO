@@ -65,33 +65,20 @@ class Edificio{
     }
 
     public function registrarAlquilerInmueble($tipoUso, $costoMensualMax, $objPersona){//encontrar primer inmueble disponible y de ahi comparar si ese inmueble es el indicado que buscan los inquilinos
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-        /*$respueta=false;
-        $colec=[];
-        foreach($this->getColeccionInmuebles() as $unInmueble){
-            if($unInmueble->getObjInquilino()== null){
-                $i=count($colec);
-                $colec[$i]=$unInmueble;
+        $encontrado=false;
+        $colInmuebles=$this->getColeccionInmuebles();
+        $i=0;
+        while ($i<count($colInmuebles) && $encontrado==FALSE){
+            if($colInmuebles[$i]->estaDisponible($tipoUso, $costoMensualMax)){
+                    $encontrado=true;
+                    $coleccionInmuebles[$i]->alquilar($objPersona);
+
             }
+            $i++;
         }
-        $inmueble=$colec[0];
-        if(($inmueble->getTipoUso()== $tipoUso) && $inmueble->getCostoMensual()<=$costoMensualMax){
-            $inmueble->alquilar($objPersona);
-            $respueta=true;
-        }
-        
-        return $respueta;*/
+        return $encontrado;
+     
+    
     }
 
     public function calculaCostoEdificio(){

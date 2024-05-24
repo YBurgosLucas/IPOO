@@ -67,8 +67,9 @@
         public function alquilar($obj){
    
             if($this->getObjInquilino() == null){
-                $this->setObjInquilino($obj);
                 $respuesta=True;
+                $this->setObjInquilino($obj);
+                
             }
             else{
                 $respuesta=false;
