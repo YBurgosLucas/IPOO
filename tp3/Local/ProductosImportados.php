@@ -1,6 +1,6 @@
 <?php
-    include "Productos.php";
-    class ProductosIm extends Productos{
+    include_once "Producto.php";
+    class ProductosImportados extends Producto{
         private $porcentajeImportado;
         private $porcentajeImpuesto;
 
@@ -34,7 +34,7 @@
             $precio=parent::darPrecioVenta();
             $precioImportado=($precio*$this->getPorcentajeImportado())/100;
             $precioImpuesto=($precio*$this->getPorcentajeImpuesto())/100;
-            $precioFinal=$precioImportado+$precioImpuesto;
+            $precioFinal=$precio+$precioImportado+$precioImpuesto;
             return $precioFinal;
 
         }

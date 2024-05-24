@@ -12,7 +12,7 @@
             return $this->descripcion;
         }
         public function getPortjGanancia(){
-            return $this->porcentajeGanancia=$porcentajeGanancia;
+            return $this->porcentajeGanancia;
         }
         public function setDescripcion($descripcion){
             $this->descripcion=$descripcion;

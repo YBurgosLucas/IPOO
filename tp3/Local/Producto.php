@@ -1,5 +1,5 @@
 <?php
-    include "Rubro.php";
+    include_once "Rubro.php";
     class Producto{
         private $codigoBarra;
         private $descripcion;
@@ -63,8 +63,10 @@
         }
 
         public function darPrecioVenta(){
-            $porcentaje=($this->getPrecioCompra()*$this->getObjRubro()->getPortjGanancia())/100; //x*porcentaje/100
-            $precioProducto=($porcentaje*$this->getPorcentajeIva())/100;
+            $precio=$this->getPrecioCompra();
+            $porcentajeRubro=($precio*$this->getObjRubro()->getPortjGanancia())/100; //x*porcentaje/100
+            $porcentajeIva=($precio*$this->getPorcentajeIva())/100;
+            $precioProducto=$precio+$porcentajeIva+$porcentajeRubro;
 
             return $precioProducto;
         }

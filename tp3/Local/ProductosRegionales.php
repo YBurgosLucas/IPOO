@@ -1,6 +1,6 @@
 <?php
-    include "Productos.php";
-    class ProductoReg extends Productos{
+    include_once "Producto.php";
+    class ProductoRegionales extends Producto{
         private $porcentajeDescuento;
 
         public function __construct($codigoBarra,$descripcion,$stock,$porcentajeIva,$precioCompra,$objRubro,$porcentajeDescuento){
