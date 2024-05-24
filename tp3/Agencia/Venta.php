@@ -11,14 +11,14 @@ class Venta{
     private $objPaquete;
     private $cantPersonas;
     private $objCliente;
-    private $importeFinal;
     
-    public function __construct($fecha, $objPaquete, $cantPersonas, $objCliente, $importeFinal){
+    
+    public function __construct($fecha, $objPaquete, $cantPersonas, $objCliente){
         $this->fecha=$fecha;
         $this->objPaquete=$objPaquete;
         $this->cantPersonas=$cantPersonas;
         $this->objCliente=$objCliente;
-        $this->importeFinal=$importeFinal;
+        
     }
     public  function getFecha(){
         return $this->fecha;
@@ -32,9 +32,7 @@ class Venta{
     public function getObjCliente(){
         return $this->objCliente;
     }
-    public function getImporteFinal(){
-        return $this->importefinal;
-    }
+
     public function setFecha($fecha){
         $this->fecha=$fecha;
     }
@@ -47,15 +45,19 @@ class Venta{
     public function setObjCliente($objCliente){
         $this->objCliente=$objCliente;
     }
-    public function setImporteFinal($importeFinal){
-        $this->importeFinal=$importeFinal;
-    }
+
     public function __toString(){
         $cad="Fecha:".$this->getFecha().
             "\nPaquete:".$this->getObjPaquete().
             "\nCant.Personas:".$this->getCantPersonas().
-            "\nComprador:".$this->getObjCliente().
-            "\nImporte final:$".$this->getImporteFinal();
+            "\nComprador:".$this->getObjCliente();
         return $cad;
     }
+    public function darImporteVenta(){
+        $cantPersonas=$this->getCantPersonas();
+        $cantDias=$this->getObjPaquete()->getCantDias();
+        $importeFinal=$cantDias*$cantPersonas;
+        return $importeFinal;
+    }
+    
 }

@@ -5,7 +5,7 @@ include_once "Venta.php";
 
         public function __construct($fecha, $objPaquete, $cantPersonas, $objCliente, $importeFinal, $porcentajeDescuento){
             parent::__construct($fecha, $objPaquete, $cantPersonas, $objCliente, $importeFinal);
-            $this->porcentajeDescuento=$porcentajeDescuento;
+            $this->porcentajeDescuento=$porcentajeDescuento ??  20;
 
         }
         public function getPorcentajeDescuento(){
@@ -19,4 +19,13 @@ include_once "Venta.php";
             $cad.="\nPorcentaje de descuento:".$this->getPorcentajeDescuento();
             return $cad;
         }
+        public function darImporteVenta(){
+            $importeFinal=parent::darImporteVenta();
+            $porcentajeDescuento=$this->getPorcentajeDescuento();
+            $precioDescuento=$importeFinal+(($importeFinal*$porcentajeDescuento)/100);
+            $importeFinal=$importeFinal-$porcentajeDescuento;
+            return $importeFinal;
+        }
+
+
     }
