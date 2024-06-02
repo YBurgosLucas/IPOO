@@ -77,7 +77,7 @@ destino. Si el paquete pudo ser ingresado el método debe retornar true y false 
             if($encontrado==false){
                 $colPaqueteTuristico[]=$objPaqueteTuristico;
                 $this->setColPaqueteTuristico($colPaqueteTuristico);
-
+                $encontrado=true;
             }
             return $encontrado;
         }   
@@ -89,6 +89,22 @@ importe final que debe ser abanado en caso que la venta pudo concretarse con éx
 contrario.*/
         public function incorporarVenta($objPaquete,$tipoDoc,$numDoc,$cantPer, $esOnLine){
             
+            if($esOnLine instanceof VentasOnline){
+                if($this->incorporarPaquete($objPaquete)){
+                    $objVenta=new VentaOnline($objPaquete, )
+                    $resultado=true;
+
+                }
+            }
+            else if($esOnLine instanceof VentaNormal){
+                      if($this->incorporarPaquete($objPaquete)){
+                        $resultado=true;
+                      }                      
+            }
+            else{
+                $resultado=-1;
+            }
+
         }
 
 }
