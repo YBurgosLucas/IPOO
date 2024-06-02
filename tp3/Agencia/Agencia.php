@@ -91,7 +91,7 @@ contrario.*/
             
             if($esOnLine instanceof VentasOnline){
                 if($this->incorporarPaquete($objPaquete)){
-                    $objVenta=new VentaOnline($objPaquete, )
+                    $objVenta=new VentaOnline($objPaquete, );
                     $resultado=true;
 
                 }
