@@ -89,22 +89,50 @@ importe final que debe ser abanado en caso que la venta pudo concretarse con éx
 contrario.*/
         public function incorporarVenta($objPaquete,$tipoDoc,$numDoc,$cantPer, $esOnLine){
             
-            if($esOnLine instanceof VentasOnline){
+            if($esOnLine == "si"){ //$fecha, $objPaquete, $cantPersonas, $objCliente, $importeFinal, $porcentajeDescuento
                 if($this->incorporarPaquete($objPaquete)){
-                    $objVenta=new VentaOnline($objPaquete, );
-                    $resultado=true;
-
+                      
+                      $nuevoVenta=new Venta(date("y-m-d"), $objPaquete, )  ;
+                    
+                    
                 }
-            }
-            else if($esOnLine instanceof VentaNormal){
-                      if($this->incorporarPaquete($objPaquete)){
-                        $resultado=true;
-                      }                      
-            }
-            else{
-                $resultado=-1;
             }
 
         }
 
+/*informarPaquetesTuristicos(fecha,destino): método que retorna una colección con todos los
+paquetes que se realizan en una fecha y a un destino. */
+public function informarPaquetesTuristicos($fecha, $destino){
+    $colPaquetesEncontrados=[];
+    $colPaqueteTuristico=$this->getColPaqueteTuristico();
+    foreach($colPaqueteTuristico as $unPaquete){
+        if($unPaquete->getFecha() == $fecha && $unPaquete->getDetino() == $destino){
+            $colPaquetesEncontrados[]=$unPaquete;
+        }
+    }
+    return $colPaquetesEncontrados;
+}
+/* paqueteMasEcomomico(fecha,destino): método que retorna el paquete turístico mas 
+económico para una fecha y un destino. */
+ public function paqueteMasEcomomico($fecha, $destino){
+    $paqueteMenor=0;
+    $colPaqueteTuristico=$this->getColPaqueteTuristico();
+    foreach($colPaqueteTuristico as $unPaquete){
+        if($unPaquete->getFecha() == $fecha && $unPaquete->getDestino() == $destino){
+            $paquete=$this->incorporarVenta($unPaquete);
+            if($paquete<$paqueteMenor){
+                $paqueteMenor=$paquete;
+                $paqueteMayor=$unPaquete;
+            }
+        }
+    }
+    return $paqueteMayor;
+ }
+
+/*informarConsumoCliente(tipoDoc,numDoc): método que retorna todos los paquetes que
+fueron utilizados por la persona identificada con el tipoDoc y numDoc recibidos por
+parámetro */
+public function  informarConsumoCliente($tipoDoc, $numDoc){
+    
+}
 }
