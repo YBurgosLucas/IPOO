@@ -89,14 +89,15 @@ importe final que debe ser abanado en caso que la venta pudo concretarse con éx
 contrario.*/
         public function incorporarVenta($objPaquete,$tipoDoc,$numDoc,$cantPer, $esOnLine){
             
-            if($esOnLine instanceof VentasOnline){
+            if($esOnLine == "si"){
                 if($this->incorporarPaquete($objPaquete)){
-                    $objVenta=new VentaOnline($objPaquete, );
+                    $fecha=date("y-m-d");
+                    $objVenta=new VentaOnline($fecha, $objPaquete, );
                     $resultado=true;
 
                 }
             }
-            else if($esOnLine instanceof VentaNormal){
+            else if($esOnLine == "no"){
                       if($this->incorporarPaquete($objPaquete)){
                         $resultado=true;
                       }                      
