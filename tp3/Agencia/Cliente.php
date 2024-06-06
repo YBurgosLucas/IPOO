@@ -1,14 +1,27 @@
 <?php
-include "Persona.php";
-    class Cliente extends Persona{
-        private $nroCliente;
+    class Cliente {
+        private $dni;
+        private $tipoDocumento;
 
-        public function __construct( $vdni, $vnombre, $vapellido, $vnroCliente){
-            parent::__construct($vdni, $tipoDocumento, $vnombre,$vapellido);
-            $this->nroCliente=$vnroCliente;
+        public function __construct( $vdni, $tipoDocumento){
+            $this->dni=$vdni;
+            $this->tipoDocumento=$tipoDocumento;
+        }
+        public function getDni(){
+            return $this->dni;
+        }
+        public function getTipoDocumento(){
+            return $this->tipoDocumento;
+        }
+        public function setDni($vdni){
+            $this->dni=$vdni;
+        }
+        public function setTipoDocumento($tipoDocumento){
+            $this->tipoDocumento=$tipoDocumento;
         }
         public function __toString(){
-            $cad=parent::__toString();
+            $cad="DNI:".$this->getDni().
+                 "\nTipo Documento:".$this->getTipoDocumento();
             return $cad;
         }
     }

@@ -3,8 +3,8 @@ include_once "Venta.php";
     class VentasOnline extends Venta{
         private $porcentajeDescuento;
 
-        public function __construct($fecha, $objPaquete, $cantPersonas, $objCliente, $importeFinal, $porcentajeDescuento){
-            parent::__construct($fecha, $objPaquete, $cantPersonas, $objCliente, $importeFinal);
+        public function __construct($fecha, $objPaquete, $cantPersonas, $objCliente, $porcentajeDescuento){
+            parent::__construct($fecha, $objPaquete, $cantPersonas, $objCliente);
             $this->porcentajeDescuento=$porcentajeDescuento ??  20;
 
         }

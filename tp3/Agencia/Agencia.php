@@ -69,15 +69,15 @@ destino. Si el paquete pudo ser ingresado el método debe retornar true y false 
             $i=0;
             $colPaqueteTuristico=$this->getColPaqueteTuristico();
             while($i<count($colPaqueteTuristico) && $encontrado==False){
-                if($colPaqueteTuristico[$i]->getFecha()== $objPaqueteTuristico->getFecha() && $colPaqueteTuristico->getdestino()== $objPaqueteTuristico->getdestino()){
+                if($colPaqueteTuristico[$i]->getFecha()== $objPaqueteTuristico->getFecha() && $colPaqueteTuristico[$i]->getdestino()== $objPaqueteTuristico->getdestino()){
                     $encontrado=true;
                 }
                 $i++;
             }
-            if($encontrado==false){
+            if($encontrado==false){// false se incorpora
                 $colPaqueteTuristico[]=$objPaqueteTuristico;
                 $this->setColPaqueteTuristico($colPaqueteTuristico);
-                $encontrado=true;
+                
             }
             return $encontrado;
         }   
@@ -87,6 +87,28 @@ el paquete, tipo documento, número de documento, la cantidad de personas que va
 paquete turístico y si se trata o no de una venta on-line (valor true o false). El método retorna el
 importe final que debe ser abanado en caso que la venta pudo concretarse con éxito y -1 en caso
 contrario.*/
+        public function incorporarVenta($objPaquete,$tipoDoc,$numDoc,$cantPer, $esOnLine){
+            $colVentasAgencia=$this->getColVentasAgencia();
+            $colVentasOnline=$this->getColVentasOnline();
+            $fecha=date("y-m-d");
+            $objCliente=new Cliente($numDoc, $tipoDoc);
+            $importeFinal=-1;
+            if($this->incorporarPaquete($objPaquete)){
+                    if($esOnLine ){
+                        $venta=new VentasOnline($fecha, $objPaquete, $cantPer, $objCliente, 0 );
+                        $importeFinal=$venta->darImporteVenta();
+                        $colVentasOnline[]=$venta;
+                        $this->setColVentasOnline($colVentasOnline);
+                     }
+                else{
+                    $venta=new Venta($fecha, $objPaquete, $cantPer, $objCliente );
+                    $importeFinal=$venta->darImporteVenta();
+                    $colVentasAgencia[]=$venta;
+                    $this->setColVentasAgencia($colVentasAgencia);
+                }
+            } 
+            return $importeFinal;
+        }
 
 
 /*informarPaquetesTuristicos(fecha,destino): método que retorna una colección con todos los
@@ -104,24 +126,66 @@ public function informarPaquetesTuristicos($fecha, $destino){
 /* paqueteMasEcomomico(fecha,destino): método que retorna el paquete turístico mas 
 económico para una fecha y un destino. */
  public function paqueteMasEcomomico($fecha, $destino){
-    $paqueteMenor=0;
+    $paqueteMenor=9999;
     $colPaqueteTuristico=$this->getColPaqueteTuristico();
     foreach($colPaqueteTuristico as $unPaquete){
         if($unPaquete->getFecha() == $fecha && $unPaquete->getDestino() == $destino){
-            $paquete=$this->incorporarVenta($unPaquete);
-            if($paquete<$paqueteMenor){
-                $paqueteMenor=$paquete;
-                $paqueteMayor=$unPaquete;
+            $importe=$unPaquete->darImporteVenta();
+            if($importe<$paqueteMenor){
+                $paqueteMenor=$importe;
+                $paqueteEco=$unPaquete;
             }
         }
     }
-    return $paqueteMayor;
+    return $paqueteEco;
  }
 
 /*informarConsumoCliente(tipoDoc,numDoc): método que retorna todos los paquetes que
 fueron utilizados por la persona identificada con el tipoDoc y numDoc recibidos por
 parámetro */
-public function  informarConsumoCliente($tipoDoc, $numDoc){
-    
-}
+ public function  informarConsumoCliente($tipoDoc, $numDoc){
+     $colVentasAgencia=$this->getColVentasAgencia();
+     $colVentasOnline=$this->getColVentasOnline();
+     $colPaquetesEncontrados=[];
+     foreach($colVentasAgencia as $unaVenta){
+        if($unaVenta->getObjCliente()->getTipoDocumento() == $tipoDoc && $unaVenta->getObjCLiente()->getDni() == $numDoc){
+            $colPaquetesEncontrados[]=$unaVenta;
+        }
+     }
+     foreach($colVentasOnline as $unaVenta){
+        if($unaVenta->getObjCliente()->getTipoDocumento() == $tipoDoc && $unaVenta->getObjCLiente()->getDni() == $numDoc){
+            $colPaquetesEncontrados[]=$unaVenta;
+        }
+     }
+     return $colPaquetesEncontrados;
+    }
+/*informarPaquetesMasVendido(anio, n): retorna los n paquetes turísticos mas vendido en el 
+año recibido por parámetro. */
+    public function informarPaquetesMasVendido($anio, $n){
+
+    }
+/*promedioVentasOnLine(): método que retorna el promedio de ventas on-line realizadas por la
+agencia.*/
+    public function promedioVentasOnLine(){
+        $colVentasAgencia=$this->getColVentasAgencia();
+        $i=0;
+        foreach($colVentasAgencia as $unVenta){
+            $acum+=$unaVenta->darImporteVenta();
+            $i++;
+        }
+        $promedio=$acum/$i;
+        return $promedio;
+    }
+/*promedioVentasAgencia(): método que retorna el promedio de ventas on-line realizadas por la
+agencia. */
+    public function promedioVentasAgencia(){
+        $colVentasOnline=$this->getColVentasOnline();
+        $i=0;
+        foreach($colVentasOnline as $venta){
+            $acum+=$venta->darImporteVenta();
+            $i++;
+        }
+        $promedio=$acum/$i;
+        return $promedio;
+    }
 }

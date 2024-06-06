@@ -56,7 +56,8 @@ class Venta{
     public function darImporteVenta(){
         $cantPersonas=$this->getCantPersonas();
         $cantDias=$this->getObjPaquete()->getCantDias();
-        $importeFinal=$cantDias*$cantPersonas;
+        $importeXdia=$this->getObjPaquete()->getDestino()->getValorXdia();
+        $importeFinal=$cantDias*$importeXdia*$cantPersonas;
         return $importeFinal;
     }
     
